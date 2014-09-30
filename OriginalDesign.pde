@@ -1,61 +1,52 @@
-//Art Parkeenvincha Block 3, Original Design
-void setup() {
+Ball[] balls;
+void setup()
+{
   size(500, 500);
   noStroke();
-  colorMode(HSB);
-  background(0,0,255);
-  rectMode(CENTER);
+  balls = new Ball[50];
+  for(int i=0; i < balls.length; i++)
+  {
+    balls[i] = new Ball((int)(Math.random()*500),(int)(Math.random()*500));
+  }
 }
 
-//variables
-float sz = 50;
-float col;
-boolean circle = true;
-
-void draw() {
-  fill(0,0,0);
-  text("Use your scroll wheel!", 380, 490);
-  if(circle == true){
-    circle(); //draws a circle
-  }
-  else if(circle == false){
-    square(); //draws a square
-  }
-  println(circle);
-} 
-
-void mouseWheel(MouseEvent event) {
-  float e = event.getCount(); //scroll wheel controls the size of the circle or square presented on screen
-  println(e);
-  sz += e;
-}
-
-void circle()
+void draw()
 {
-  fill(col,255,255);
-  ellipse(mouseX, mouseY, sz, sz);
-  col ++; //HSB color rainbow thing yea
-  if(col > 255){
-    col = 0;
+  fill(255,255,255,100);
+  rect(0,0,500,500); 
+  for(int i=0; i < balls.length; i++)
+  {
+    balls[i].reset();
+    balls[i].move();
+    balls[i].show();
   }
 }
 
-void square()
-{
-  fill(col,255,255);
-  rect(mouseX, mouseY, sz, sz);
-  col ++; //HSB color rainbow thing yea
-  if(col > 255){
-    col = 0;
+class Ball{
+  float myX, myY;
+  Ball(float x, float y)
+  {
+    myX = x;
+    myY = y;
   }
-}
-
-void mousePressed() //boolean square or circle toggle
-{
-  if(circle == false){
-    circle = true;
+  void reset()
+  {
+    if(keyPressed == true && key == ' ')
+    {
+      myX = (int)(Math.random()*500);
+      myY = (int)(Math.random()*500);
+    }
   }
-  else if(circle == true){
-    circle = false;
+  void move()
+  {
+    if(mousePressed == true){
+    myX = lerp(myX, mouseX, 0.05);
+    myY = lerp(myY, mouseY, 0.05);
+    }
+  }
+  void show()
+  {
+    fill(255, 0, 0);
+    ellipse(myX, myY, 50, 50);
   }
 }
